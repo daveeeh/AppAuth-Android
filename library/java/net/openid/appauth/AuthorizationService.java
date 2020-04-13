@@ -394,8 +394,7 @@ public class AuthorizationService {
         return intent;
     }
 
-    private static class TokenRequestTask
-            extends AsyncTask<Void, Void, JSONObject> {
+    private static class TokenRequestTask {
 
         private TokenRequest mRequest;
         private ClientAuthentication mClientAuthentication;
@@ -417,7 +416,11 @@ public class AuthorizationService {
             mCallback = callback;
         }
 
-        @Override
+        public void execute() {
+            JSONObject object = this.doInBackground(new Void[0]);
+            onPostExecute(object);
+        }
+
         protected JSONObject doInBackground(Void... voids) {
             InputStream is = null;
             try {
@@ -472,7 +475,6 @@ public class AuthorizationService {
             return null;
         }
 
-        @Override
         protected void onPostExecute(JSONObject json) {
             if (mException != null) {
                 mCallback.onTokenRequestCompleted(null, mException);
